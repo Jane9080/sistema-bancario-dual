@@ -1,0 +1,140 @@
+
+
+
+
+
+
+🏦 BANCOS:
+Banco	Código	Cor	Email Sistema
+Banco Comercial de Kent	kent	🔵 Azul (#1e3a5f)	bancokent01@gmail.com
+Banco Popular de Jane	jane	🟢 Verde (#0f5b3a)	bancojane02@gmail.com
+
+sistema-bancario/
+├── data/
+│   ├── kent.db       ← Banco Kent
+│   ├── jane.db       ← Banco Jane
+│   └── shared.db     ← Transferências interbancárias
+
+
+
+Tabelas em cada banco:
+
+Tabela	Descrição
+accounts	Contas dos clientes + conta do banco
+admins	Administradores do banco
+transactions	Todas as transações
+loans	Empréstimos
+receipts	Comprovativos
+notifications	Notificações
+scheduled_transfers	Agendamentos
+password_history	Histórico de passwords
+login_attempts	Tentativas de login
+reset_tokens	Tokens de recuperação
+Tabela partilhada (shared.db):
+
+Tabela	Descrição
+interbank_transfers	Transferências entre bancos
+
+
+
+sistema-bancario/
+├── .env                          ← Configurações sensíveis
+├── server.js                     ← Servidor principal + Cron Job
+├── package.json
+├── data/                          ← Bases SQLite
+├── temp/                          ← PDFs temporários (criação conta)
+├── receipts/                     ← PDFs de comprovativos
+├── logs/                         ← Logs (se existirem)
+├── backups/                      ← Backups (se existirem)
+└── src/
+    ├── database/
+    │   ├── init.js               ← Criação das tabelas + dados iniciais
+    │   └── sqlite.js             ← Conexões às bases de dados
+    ├── services/
+    │   ├── auth.js               ← Registo, Login, Recuperação, Agendamento
+    │   ├── account.js            ← Depósito, Levantamento
+    │   ├── transfer.js           ← Transferências (normal + internal)
+    │   ├── loan.js               ← Empréstimos
+    │   ├── receipt.js            ← Comprovativos PDF
+    │   ├── notification.js       ← Notificações internas
+    │   ├── email.js              ← Envio de emails (Nodemailer)
+    │   └── pdf.js                ← Geração de PDF (criação conta)
+    ├── routes/
+    │   ├── auth.js               ← Rotas públicas (login, registo, recuperação)
+    │   ├── api.js                ← Rotas protegidas (cliente)
+    │   ├── admin.js              ← Rotas do admin
+    │   └── adminAuth.js          ← Autenticação do admin
+    ├── models/
+    │   ├── Account.js
+    │   ├── Transaction.js
+    │   ├── Loan.js
+    │   └── TransferReceipt.js
+    ├── middleware/
+    │   └── (middlewares se existirem)
+    ├── utils/
+    │   ├── crypto.js             ← Tokens, NIB, IBAN, etc.
+    │   ├── constants.js          ← Taxas, limites, status
+    │   └── validators.js         ← Validações
+    └── public/                    ← Ficheiros estáticos (Frontend)
+        ├── index.html
+        ├── kent.html / jane.html           ← Área de cliente
+        ├── admin-kent.html / admin-jane.html ← Gestão de contas (admin)
+        ├── admin-kent-dashboard.html        ← Dashboard Kent
+        ├── admin-jane-dashboard.html        ← Dashboard Jane
+        ├── admin-login.html / admin-login-jane.html
+        ├── reset-password.html              ← Redefinir password
+        ├── css/
+        │   ├── common.css
+        │   ├── kent.css
+        │   └── jane.css
+        └── js/
+            ├── kent.js / jane.js           ← Lógica cliente
+            ├── admin-kent.js / admin-jane.js ← Lógica admin
+            └── lib/                        ← Bibliotecas
+
+
+
+
+
+
+
+
+🔐 CONTAS PADRÃO (criadas no init.js):
+Tipo	Email	Password	Banco
+Cliente	teste@kent.cv	teste123	Kent
+Cliente	teste@jane.cv	teste123	Jane
+Admin	admin@kent.cv	admin123	Kent
+Admin	admin@jane.cv	admin123	Jane
+Banco	banco@kent.cv	banco123	Kent (KENT-BANK-001)
+Banco	banco@jane.cv	banco123	Jane (JANE-BANK-001)
+📧 SERVIÇOS DE EMAIL:
+Serviço	Tecnologia
+Envio de emails	Nodemailer + Gmail
+Recuperação de password	Email com link
+Comprovativo transferência	Email com PDF anexo
+Notificações	Email para cada ação
+⏰ CRON JOBS:
+Job	Intervalo
+Executar transferências agendadas	60 segundos
+🌍 ROTAS PRINCIPAIS:
+URL	Descrição
+/	Index
+/kent	Área cliente Kent
+/jane	Área cliente Jane
+/admin-kent	Gestão contas Kent
+/admin-jane	Gestão contas Jane
+/admin-kent-dashboard	Dashboard Kent
+/admin-jane-dashboard	Dashboard Jane
+/admin-login	Login admin Kent
+/admin-login-jane	Login admin Jane
+/reset-password	Redefinir password
+🔑 CHAVES E TOKENS:
+Tipo	Descrição
+JWT	Autenticação (expira 30 dias)
+Reset Token	Recuperação password (expira 15 min)
+NIB/IBAN	Gerados automaticamente
+Confirm Key	7 dígitos aleatórios
+Isto é o retrato completo do sistema! 🏦🚀
+
+Queres começar o limite diário agora?
+

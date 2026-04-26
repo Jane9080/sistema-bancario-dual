@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sistema Bancário Dual | Kent & Jane</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .banks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .bank-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .bank-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+        }
+        
+        .bank-header {
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .bank-header.kent {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+        }
+        
+        .bank-header.jane {
+            background: linear-gradient(135deg, #0f5b3a 0%, #1a7a4c 100%);
+        }
+        
+        .bank-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .bank-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .bank-code {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .bank-body {
+            padding: 25px;
+        }
+        
+        .bank-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .bank-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4a5568;
+        }
+        
+        .bank-features li i {
+            width: 24px;
+            color: #10b981;
+        }
+        
+        .btn-bank {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-kent {
+            background: #1e3a5f;
+            color: white;
+        }
+        
+        .btn-kent:hover {
+            background: #2c5282;
+        }
+        
+        .btn-jane {
+            background: #0f5b3a;
+            color: white;
+        }
+        
+        .btn-jane:hover {
+            background: #1a7a4c;
+        }
+        
+        .info-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 30px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-section h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .banks-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="bank-icon" style="font-size: 50px;">🏦</div>
+            <h1>Sistema Bancário Dual</h1>
+            <p>Banco Comercial de Kent • Banco Popular de Jane</p>
+            <p style="margin-top: 10px; font-size: 14px;">💰 Moeda: Escudo Cabo-verdiano (CVE)</p>
+        </div>
+        
+        <div class="banks-grid">
+            <!-- Banco de Kent -->
+            <div class="bank-card" onclick="selectBank('kent')">
+                <div class="bank-header kent">
+                    <div class="bank-icon">🦁</div>
+                    <div class="bank-name">Banco Comercial de Kent</div>
+                    <div class="bank-code">Código: KENT</div>
+                </div>
+                <div class="bank-body">
+                    <ul class="bank-features">
+                        <li><i class="fas fa-check-circle"></i> Transferências inter-bancárias</li>
+                        <li><i class="fas fa-check-circle"></i> Empréstimos até 100.000 CVE</li>
+                        <li><i class="fas fa-check-circle"></i> Extrato digital</li>
+                        <li><i class="fas fa-check-circle"></i> Comprovativos em PDF</li>
+                    </ul>
+                    <button class="btn-bank btn-kent" onclick="event.stopPropagation(); selectBank('kent')">
+                        <i class="fas fa-sign-in-alt"></i> Aceder ao Banco Kent
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Banco de Jane -->
+            <div class="bank-card" onclick="selectBank('jane')">
+                <div class="bank-header jane">
+                    <div class="bank-icon">🌹</div>
+                    <div class="bank-name">Banco Popular de Jane</div>
+                    <div class="bank-code">Código: JANE</div>
+                </div>
+                <div class="bank-body">
+                    <ul class="bank-features">
+                        <li><i class="fas fa-check-circle"></i> Transferências inter-bancárias</li>
+                        <li><i class="fas fa-check-circle"></i> Empréstimos até 100.000 CVE</li>
+                        <li><i class="fas fa-check-circle"></i> Extrato digital</li>
+                        <li><i class="fas fa-check-circle"></i> Comprovativos em PDF</li>
+                    </ul>
+                    <button class="btn-bank btn-jane" onclick="event.stopPropagation(); selectBank('jane')">
+                        <i class="fas fa-sign-in-alt"></i> Aceder ao Banco Jane
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3><i class="fas fa-info-circle"></i> Informações do Sistema</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-value">🏦 2</div>
+                    <div class="info-label">Bancos Integrados</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">💰 100 CVE</div>
+                    <div class="info-label">Taxa inter-bancária (Kent→Jane)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">💰 150 CVE</div>
+                    <div class="info-label">Taxa inter-bancária (Jane→Kent)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">📈 3.5% - 4%</div>
+                    <div class="info-label">Juros empréstimo (mensal)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function selectBank(bank) {
+            window.location.href = `/${bank}`;
+        }
+    </script>
+</body>
+</html>

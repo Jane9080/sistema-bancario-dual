@@ -1,0 +1,15 @@
+// Cria ficheiro fix-reserved.js
+const { getKentDb, getJaneDb } = require('./src/database/sqlite');
+const kentDb = getKentDb();
+const janeDb = getJaneDb();
+
+// Corrigir reservas inválidas (reservado > saldo)
+kentDb.run('UPDATE accounts SET reserved_amount = 0 WHERE reserved_amount > balance');
+janeDb.run('UPDATE accounts SET reserved_amount = 0 WHERE reserved_amount > balance');
+
+// Garantir que não há NULLs
+kentDb.run('UPDATE accounts SET reserved_amount = 0 WHERE reserved_amount IS NULL');
+janeDb.run('UPDATE accounts SET reserved_amount = 0 WHERE reserved_amount IS NULL');
+
+console.log('✅ Dados corrigidos!');
+setTimeout(() => process.exit(0), 500);

@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Comercial de Kent
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 19/04/2026                              HORA: 12:35:51
+REF: TXN-1776605750068-FBDB23CA              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: João Santos da Cruz
+Conta: KENT-05294612-4165
+
+DESTINO
+Nome: Kent dos Ramos Fernandes
+Conta: KENT-05327591-3292
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:    4000.00 CVE
+TAXA DE OPERAÇÃO:        0.00 CVE
+VALOR TOTAL:          4000.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Comercial de Kent
+=======================================================

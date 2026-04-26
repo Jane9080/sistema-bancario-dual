@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - Kent</title>
+    <style>
+        body { font-family: Arial; background: #1e3a5f; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 16px; width: 350px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .error { color: red; margin: 10px 0; display: none; }
+        h2 { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🔐 Admin - Banco Kent</h2>
+        <div id="errorMsg" class="error"></div>
+        <input type="email" id="email" placeholder="admin@kent.cv">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Entrar como Admin</button>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMsg');
+            errorDiv.style.display = 'none';
+
+            try {
+                const res = await fetch(`${API_BASE}/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, bankCode: 'kent' })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+                
+                localStorage.clear();
+                localStorage.setItem('kent_admin_token', data.token);
+                window.location.href = '/admin-kent-dashboard';
+
+            } catch (err) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = err.message;
+            }
+        }
+    </script>
+</body>
+</html>

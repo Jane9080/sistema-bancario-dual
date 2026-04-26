@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Popular de Jane
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 24/04/2026                              HORA: 20:36:28
+REF: TXN-1777066585438-62D2751C              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: Autémio Sousa Pires
+Conta: JANE-60137887-9790
+
+DESTINO
+Nome: Adigiley Quintas Ambrosa
+Conta: JANE-81571699-8341
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:    5000.00 CVE
+TAXA DE OPERAÇÃO:        0.00 CVE
+VALOR TOTAL:          5000.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Popular de Jane
+=======================================================

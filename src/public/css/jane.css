@@ -1,0 +1,114 @@
+/* Cores específicas do Banco Popular de Jane */
+:root {
+    --jane-primary: #0f5b3a;
+    --jane-primary-light: #1a7a4c;
+    --jane-primary-dark: #0a3d26;
+    --jane-accent: #b0b0b0;
+    --jane-accent-light: #c5c5c5;
+    --jane-accent-dark: #8a8a8a;
+}
+
+/* Header Jane */
+.header.jane {
+    background: linear-gradient(135deg, var(--jane-primary) 0%, var(--jane-primary-light) 100%);
+}
+
+/* Botões Jane */
+.btn-jane {
+    background: var(--jane-primary);
+    color: white;
+}
+
+.btn-jane:hover {
+    background: var(--jane-primary-light);
+}
+
+.btn-jane-outline {
+    background: transparent;
+    border: 1px solid var(--jane-primary);
+    color: var(--jane-primary);
+}
+
+/* Tabs Jane */
+.tabs.jane .tab-btn.active {
+    background: var(--jane-primary);
+}
+
+/* Quick Actions Jane */
+.quick-btn.jane i {
+    color: var(--jane-primary);
+}
+
+/* Balance Card Jane */
+.balance-card.jane {
+    background: linear-gradient(135deg, var(--jane-primary) 0%, var(--jane-primary-light) 100%);
+}
+
+/* Accent color */
+.text-accent {
+    color: var(--jane-accent);
+}
+
+.bg-accent {
+    background: var(--jane-accent);
+}
+
+.border-accent {
+    border-color: var(--jane-accent);
+
+
+}
+
+/* Forçar estilo das tabs no Jane */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 30px;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 65px;
+    padding: 10px 6px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    font-size: 11px;
+    color: #475569;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: var(--jane-primary, #0f5b3a);
+    color: white;
+}
+
+/* Sobrescrever a cor da aba ativa para o Jane */
+.tab-detail-btn.active {
+    background: #0f5b3a;
+}
+
+/* Sobrescrever cor da aba ativa para o Banco Jane */
+.tab-detail-btn.active {
+    background: #0f5b3a;
+}
+
+.detail-tab-content h4 {
+    border-left-color: #0f5b3a;
+}
+
+/* Cor dos botões do modal para o Banco Jane */
+.modal-buttons .btn-primary {
+    background: #0f5b3a;
+    color: white;
+}

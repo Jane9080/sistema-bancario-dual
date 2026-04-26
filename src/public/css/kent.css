@@ -1,0 +1,139 @@
+/* Cores específicas do Banco Comercial de Kent */
+:root {
+    --kent-primary: #1e3a5f;
+    --kent-primary-light: #2c5282;
+    --kent-primary-dark: #142b47;
+    --kent-accent: #c9a03d;
+    --kent-accent-light: #d4b05c;
+    --kent-accent-dark: #a07830;
+}
+
+/* Header Kent */
+.header.kent {
+    background: linear-gradient(135deg, var(--kent-primary) 0%, var(--kent-primary-light) 100%);
+}
+
+/* Botões Kent */
+.btn-kent {
+    background: var(--kent-primary);
+    color: white;
+}
+
+.btn-kent:hover {
+    background: var(--kent-primary-light);
+}
+
+.btn-kent-outline {
+    background: transparent;
+    border: 1px solid var(--kent-primary);
+    color: var(--kent-primary);
+}
+
+/* Tabs Kent */
+.tabs.kent .tab-btn.active {
+    background: var(--kent-primary);
+}
+
+/* Quick Actions Kent */
+.quick-btn.kent i {
+    color: var(--kent-primary);
+}
+
+/* Balance Card Kent */
+.balance-card.kent {
+    background: linear-gradient(135deg, var(--kent-primary) 0%, var(--kent-primary-light) 100%);
+}
+
+/* Accent color */
+.text-accent {
+    color: var(--kent-accent);
+}
+
+.bg-accent {
+    background: var(--kent-accent);
+}
+
+.border-accent {
+    border-color: var(--kent-accent);
+}
+
+/* Forçar estilo das tabs no Kent */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: white;
+    padding: 12px;
+    border-radius: 30px;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 65px;
+    padding: 10px 6px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    font-size: 11px;
+    color: #475569;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: var(--kent-primary, #1e3a5f);
+    color: white;
+}
+
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-buttons .btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.modal-buttons .btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.modal-buttons .btn-outline {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+}
+
+
+/* Garantir que o modal tem scroll */
+.modal-body {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Cor dos botões do modal para o Banco Kent */
+.modal-buttons .btn-primary {
+    background: #1e3a5f;
+    color: white;
+}
+
+.modal-buttons .btn-primary:hover {
+    background: #2c5282;
+}

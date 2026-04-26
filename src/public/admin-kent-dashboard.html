@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Banco Comercial de Kent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        .header { background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%); color: white; padding: 20px 30px; border-radius: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 22px; }
+        .header-nav { display: flex; gap: 10px; }
+        .header-nav a { color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; background: rgba(255,255,255,0.15); font-size: 13px; }
+        .header-nav a:hover { background: rgba(255,255,255,0.25); }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .stat-card .icon { font-size: 28px; margin-bottom: 10px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: #1e293b; }
+        .stat-card .label { font-size: 13px; color: #64748b; margin-top: 5px; }
+        
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .chart-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .chart-card h3 { font-size: 16px; color: #1e293b; margin-bottom: 15px; }
+        .chart-card canvas { max-height: 250px; }
+        
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .list-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .list-card h3 { font-size: 16px; color: #1e293b; margin-bottom: 15px; }
+        .list-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+        .list-item:last-child { border-bottom: none; }
+        
+        .full-width { grid-column: 1 / -1; }
+        
+        @media (max-width: 768px) {
+            .charts-grid, .bottom-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 10px; }
+        }
+        
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 24px; border-radius: 40px; z-index: 1000; display: none; }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+        .toast.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦁 Dashboard - Banco Comercial de Kent</h1>
+            <div class="header-nav">
+                <a href="/admin-kent">👥 Gestão de Contas</a>
+                <a href="#" onclick="logout()">🚪 Sair</a>
+            </div>
+        </div>
+        
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card"><div class="icon">👥</div><div class="value" id="totalAccounts">-</div><div class="label">Total de Contas</div></div>
+            <div class="stat-card"><div class="icon">🟢</div><div class="value" id="activeAccounts">-</div><div class="label">Contas Ativas</div></div>
+            <div class="stat-card"><div class="icon">💰</div><div class="value" id="totalBalance">-</div><div class="label">Saldo Total (CVE)</div></div>
+            <div class="stat-card"><div class="icon">💸</div><div class="value" id="totalFees">-</div><div class="label">Taxas Recebidas (CVE)</div></div>
+        </div>
+        
+        <div class="charts-grid">
+            <div class="chart-card"><h3>📈 Evolução do Saldo (7 dias)</h3><canvas id="balanceChart"></canvas></div>
+            <div class="chart-card"><h3>🍩 Status das Contas</h3><canvas id="statusChart"></canvas></div>
+            <div class="chart-card"><h3>📊 Transações por Dia</h3><canvas id="transactionsChart"></canvas></div>
+            <div class="chart-card"><h3>💸 Taxas por Dia</h3><canvas id="feesChart"></canvas></div>
+        </div>
+        
+        <div class="bottom-grid">
+            <div class="list-card"><h3>💰 Top Clientes</h3><div id="topClientsList"></div></div>
+            <div class="list-card"><h3>🔄 Atividade Recente</h3><div id="recentActivityList"></div></div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        const BANK_CODE = 'kent';
+        let currentToken = localStorage.getItem('kent_admin_token');
+        
+        if (!currentToken) window.location.href = '/admin-login';
+        
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+        
+        async function apiRequest(endpoint, method = 'GET') {
+            const res = await fetch(`${API_BASE}${endpoint}`, {
+                method,
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentToken }
+            });
+            if (res.status === 401 || res.status === 403) { logout(); return; }
+            return res.json();
+        }
+        
+        function logout() {
+            localStorage.removeItem('kent_admin_token');
+            window.location.href = '/admin-login';
+        }
+        
+        function formatMoney(val) {
+            return (val || 0).toLocaleString('pt-CV');
+        }
+        
+        async function loadDashboard() {
+            try {
+                const data = await apiRequest('/admin/dashboard/kent');
+                if (!data) return;
+                
+                // Stats
+                document.getElementById('totalAccounts').textContent = data.stats.totalAccounts;
+                document.getElementById('activeAccounts').textContent = data.stats.activeAccounts;
+                document.getElementById('totalBalance').textContent = formatMoney(data.stats.totalBalance);
+                document.getElementById('totalFees').textContent = formatMoney(data.stats.totalFees);
+                
+                // Gráfico de Saldo
+                const balanceCtx = document.getElementById('balanceChart').getContext('2d');
+                new Chart(balanceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.balanceEvolution.map(d => d.date),
+                        datasets: [{
+                            label: 'Saldo (CVE)',
+                            data: data.balanceEvolution.map(d => d.balance),
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                
+                // Gráfico de Status (Donut)
+                const statusCtx = document.getElementById('statusChart').getContext('2d');
+                new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Ativas', 'Inativas', 'Bloqueadas'],
+                        datasets: [{
+                            data: [data.stats.activeAccounts, data.stats.inactiveAccounts, data.stats.blockedAccounts],
+                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                
+                // Gráfico de Transações
+                const transCtx = document.getElementById('transactionsChart').getContext('2d');
+                new Chart(transCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.transactionsByDay.map(d => d.date),
+                        datasets: [{
+                            label: 'Nº Transações',
+                            data: data.transactionsByDay.map(d => d.count),
+                            backgroundColor: '#3b82f6'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                
+                // Gráfico de Taxas
+                const feesCtx = document.getElementById('feesChart').getContext('2d');
+                new Chart(feesCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.feesByDay.map(d => d.date),
+                        datasets: [{
+                            label: 'Taxas (CVE)',
+                            data: data.feesByDay.map(d => d.total),
+                            backgroundColor: '#f59e0b'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                
+                // Top Clientes
+                let clientsHtml = '';
+                data.topClients.forEach((c, i) => {
+                    clientsHtml += `<div class="list-item"><span>${i+1}. ${c.holder_name}</span><span style="font-weight:600;">${formatMoney(c.balance)} CVE</span></div>`;
+                });
+                document.getElementById('topClientsList').innerHTML = clientsHtml || '<p style="color:#64748b;">Sem dados</p>';
+                
+                // Atividade Recente
+                let activityHtml = '';
+                data.recentActivity.forEach(a => {
+                    activityHtml += `<div class="list-item"><span>${a.holder_name}: ${a.description || a.type}</span><span>${new Date(a.created_at + 'Z').toLocaleString()}</span></div>`;
+                });
+                document.getElementById('recentActivityList').innerHTML = activityHtml || '<p style="color:#64748b;">Sem dados</p>';
+                
+            } catch (err) {
+                console.error('Erro ao carregar dashboard:', err);
+                showToast('Erro ao carregar dados', 'error');
+            }
+        }
+        
+        loadDashboard();
+    </script>
+</body>
+</html>

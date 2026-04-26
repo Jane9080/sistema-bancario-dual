@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Comercial de Kent
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 26/04/2026                              HORA: 13:38:29
+REF: TXN-1777214309462-55913537              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: Dioter Macêdo Vera Cruz
+Conta: KENT-13609938-8479
+
+DESTINO
+Nome: ABCD EFGH IJKL
+Conta: KENT-35883440-4069
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:    6000.00 CVE
+TAXA DE OPERAÇÃO:        0.00 CVE
+VALOR TOTAL:          6000.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Comercial de Kent
+=======================================================

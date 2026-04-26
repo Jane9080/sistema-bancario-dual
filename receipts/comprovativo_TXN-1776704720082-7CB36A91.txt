@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Comercial de Kent
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 20/04/2026                              HORA: 16:05:21
+REF: TXN-1776704720082-7CB36A91              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: Jane kent Fernandes
+Conta: KENT-04505088-4099
+
+DESTINO
+Nome: Adigiley Quintas
+Conta: KENT-04477169-1436
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:    4000.00 CVE
+TAXA DE OPERAÇÃO:        0.00 CVE
+VALOR TOTAL:          4000.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Comercial de Kent
+=======================================================

@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Comercial de Kent
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 19/04/2026                              HORA: 21:58:56
+REF: TXN-1776639536010-623E9302              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: Adigiley Quintas
+Conta: KENT-39311527-8303
+
+DESTINO
+Nome: Dioter Vera Cruz
+Conta: KENT-36820350-5473
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:     978.00 CVE
+TAXA DE OPERAÇÃO:        0.00 CVE
+VALOR TOTAL:           978.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Comercial de Kent
+=======================================================

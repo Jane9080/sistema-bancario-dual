@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Comercial de Kent
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 26/04/2026                              HORA: 13:31:59
+REF: TXN-1777213918015-48C720D0              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: Dioter Macêdo Vera Cruz
+Conta: KENT-13609938-8479
+
+DESTINO
+Nome: Fábio dos Ramos Fernandes
+NIB: 000300001303090010176
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:    3400.00 CVE
+TAXA DE OPERAÇÃO:      100.00 CVE
+VALOR TOTAL:          3500.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Comercial de Kent
+=======================================================

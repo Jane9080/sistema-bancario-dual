@@ -1,0 +1,46 @@
+node -e "const sqlite3=require('sqlite3').verbose(); const db=new sqlite3.Database('data/kent.db'); db.run('INSERT INTO accounts (account_number, holder_name, holder_email, nib, iban, balance, status) VALUES (?, ?, ?, ?, ?, ?, ?)', ['KENT-BANK-001', 'Banco Comercial de Kent', 'banco@kent.cv', '000400000BANK0010193', 'CV6400040000BANK0010193', 1000000, 'active'], function(err){console.log(err ? err.message : 'Conta do banco Kent criada!'); db.close();});"
+
+
+
+
+
+
+node -e "const sqlite3=require('sqlite3').verbose(); const db=new sqlite3.Database('data/jane.db'); db.run('INSERT INTO accounts (account_number, holder_name, holder_email, nib, iban, balance, status) VALUES (?, ?, ?, ?, ?, ?, ?)', ['JANE-BANK-001', 'Banco Popular de Jane', 'banco@jane.cv', '00030000BANK0010176', 'CV6400030000BANK0010176', 1000000, 'active'], function(err){console.log(err ? err.message : 'Conta do banco Jane criada!'); db.close();});"
+
+
+
+
+npm start
+rmdir /s data
+
+\Desktop\sistema-bancario>                                                                                 
+
+
+
+
+
+
+console.log('Inputs de data:', {
+    startDate: document.getElementById('receiptStartDate_4')?.value,
+    endDate: document.getElementById('receiptEndDate_4')?.value
+});                                                                                            
+
+5349300
+
+
+async function filterReceipts(accountId) {
+    const startDate = document.getElementById(`receiptStartDate_${accountId}`).value;
+    const endDate = document.getElementById(`receiptEndDate_${accountId}`).value;
+    await loadReceiptsData(accountId, startDate, endDate);
+}
+
+
+
+
+// 3. Ver a função loadReceiptsData manualmente
+loadReceiptsData(7, '2026-04-20', '2026-04-20')
+
+
+
+localStorage.clear();
+window.location.href = '/admin-login';

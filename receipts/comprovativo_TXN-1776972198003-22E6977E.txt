@@ -1,0 +1,24 @@
+=======================================================
+                    Banco Comercial de Kent
+
+                COMPROVATIVO DE TRANSFERÊNCIA
+=======================================================
+DATA: 23/04/2026                              HORA: 18:23:18
+REF: TXN-1776972198003-22E6977E              ESTADO: SUCESSO
+----------------------------------------------------------------------------
+
+ORIGEM
+Nome: Kent Ramos Fernandes
+Conta: KENT-69719713-4224
+
+DESTINO
+Nome: Dioter Vera Cruz
+Conta: KENT-71816389-8974
+
+----------------------------------------------------------------------------
+VALOR TRANSFERIDO:    1000.00 CVE
+TAXA DE OPERAÇÃO:        0.00 CVE
+VALOR TOTAL:          1000.00 CVE
+----------------------------------------------------------------------------
+            Obrigado por utilizar o Banco Comercial de Kent
+=======================================================

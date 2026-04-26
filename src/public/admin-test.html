@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Test</title>
+</head>
+<body>
+    <h1>Teste Admin</h1>
+    <button onclick="testLogin()">Testar Login</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testLogin() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'A testar...';
+            
+            try {
+                const res = await fetch('http://localhost:3000/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'admin@kent.cv', password: 'admin123', bankCode: 'kent' })
+                });
+                
+                const data = await res.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+                
+                if (data.token) {
+                    localStorage.setItem('kent_admin_token', data.token);
+                    resultDiv.textContent += '\n\n✅ Token guardado! Redirecionando...';
+                    setTimeout(() => {
+                        window.location.href = '/admin-kent';
+                    }, 2000);
+                }
+            } catch (err) {
+                resultDiv.textContent = 'Erro: ' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>

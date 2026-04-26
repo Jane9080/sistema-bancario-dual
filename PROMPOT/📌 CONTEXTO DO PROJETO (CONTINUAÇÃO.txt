@@ -1,0 +1,177 @@
+📌 CONTEXTO DO PROJETO (CONTINUAÇÃO - NÃO COMEÇAR DO ZERO)
+
+🔹 Nome do projeto:
+Sistema Web Bancário Multi-Banco
+
+🔹 Tipo:
+Sistema web completo (backend + frontend) com área de cliente e administrador
+
+🔹 Objetivo:
+Desenvolver um sistema bancário online que suporta múltiplos bancos independentes, com funcionalidades completas para clientes e administradores.
+
+---
+
+🏦 CONTEXTO FUNCIONAL
+
+O sistema suporta dois bancos:
+
+* Banco Comercial de Kent (tema azul)
+* Banco Popular de Jane (tema verde)
+
+Moeda: CVE (Escudo Cabo-verdiano)
+
+Cada banco possui:
+
+* Base de dados própria (SQLite)
+* Interface própria
+* Gestão independente
+
+---
+
+⚙️ TECNOLOGIAS
+
+* Backend: Node.js + Express
+* Banco de dados: SQLite
+* Frontend: HTML + CSS + JavaScript (vanilla)
+* Arquitetura: MVC modular
+
+---
+
+📁 ESTRUTURA DO PROJETO
+
+* src/
+
+  * controllers/
+  * services/
+  * models/
+  * routes/
+  * middleware/
+  * database/
+* public/
+* data/
+* logs/
+* backups/
+
+---
+
+✅ FUNCIONALIDADES IMPLEMENTADAS
+
+👤 CLIENTE:
+
+* Login/Registo (restrição @gmail.com)
+* Depósito e Levantamento
+* Transferências (interna e interbancária)
+* Empréstimos (solicitação e pagamento)
+* Extrato bancário
+* Perfil completo
+* Notificações
+* Comprovativos PDF (ver/download/apagar)
+* Alteração de password (FUNCIONA)
+
+👨‍💼 ADMIN:
+
+* Login separado (tabela admins)
+* Gestão de contas (ativar/desativar/bloquear)
+* Ações em massa
+* Pesquisa e filtros
+* Estatísticas
+* Visualização detalhada (perfil, transações, comprovativos, empréstimos)
+* Filtros por data (FUNCIONA)
+* Visualização global (transações, comprovativos, empréstimos)
+* Auditoria (senhas, respostas de segurança)
+* Agenda de transferências
+* Formatação do sistema
+
+---
+
+❌ PROBLEMA ATUAL (FOCO PRINCIPAL)
+
+A funcionalidade de:
+
+* Alterar Password (ADMIN)
+* Alterar Email (ADMIN)
+
+NÃO está a funcionar.
+
+---
+
+🐞 DETALHES DO ERRO
+
+* Funciona corretamente para CLIENTES
+* NÃO funciona para ADMIN
+* Erro indica resposta inválida (não JSON)
+* Possível retorno HTML ou erro interno do servidor
+
+---
+
+🧠 HIPÓTESES TÉCNICAS
+
+Possíveis causas:
+
+1. Rota `/admin/change-password` inexistente ou mal definida
+2. Middleware de autenticação de admin com falha
+3. Controller ou service não executado corretamente
+4. Token não está sendo enviado corretamente no frontend
+5. Erro no backend retornando HTML em vez de JSON
+
+---
+
+📌 CÓDIGO RELACIONADO (FRONTEND)
+
+Função usada:
+
+async function changeAdminPassword() {
+const currentPassword = prompt('Digite a sua password atual:');
+if (!currentPassword) return;
+
+```
+const newPassword = prompt('Digite a nova password:');
+if (!newPassword || newPassword.length < 6) return;
+
+const confirmNew = prompt('Confirme a nova password:');
+if (newPassword !== confirmNew) return;
+
+const result = await apiRequest(`/admin/change-password`, 'POST', {
+    currentPassword,
+    newPassword
+});
+```
+
+}
+
+---
+
+📂 FICHEIROS IMPORTANTES
+
+* server.js
+* src/routes/admin.js
+* src/routes/adminAuth.js
+* src/middleware/auth.js (ou adminMiddleware)
+* src/services/*
+* src/models/*
+* src/public/js/admin-*.js
+
+---
+
+🎯 OBJETIVO ATUAL
+
+Diagnosticar e corrigir completamente:
+
+* alteração de password do admin
+* alteração de email do admin
+
+Garantindo:
+
+* rota funcional
+* middleware correto
+* resposta JSON válida
+* integração frontend/backend correta
+
+---
+
+📌 REGRAS
+
+* Este é um projeto em andamento
+* NÃO recomeçar do zero
+* Continuar exatamente daqui
+* Tratar como sistema real em produção

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Banco Comercial de Kent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/kent.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header kent">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo">🦁</div>
+        <div class="notifications-icon" id="notificationsIcon" style="position: relative; cursor: pointer;">
+            <i class="fas fa-bell" style="font-size: 24px;"></i>
+            <span class="badge" id="notificationsBadge" style="display: none; position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px;">0</span>
+        </div>
+    </div>
+    <h1>Banco Comercial de Kent</h1>
+    <p>Excelência em Serviços Bancários</p>
+    <p style="font-size: 11px; margin-top: 8px;">Código: KENT | Moeda: CVE</p>
+</div>
+
+        <div id="authState" style="display: none;">
+            <div id="loggedInView">
+                <div class="balance-card kent" id="balanceCard">
+                    <div class="balance-label"><i class="fas fa-wallet"></i> Saldo Disponível</div>
+                    <div class="balance-amount"><span id="balanceAmount">0</span><span class="balance-currency">CVE</span></div>
+                    <div style="font-size: 12px; margin-top: 10px;"><i class="fas fa-user"></i> <span id="userName"></span></div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="quick-btn kent" id="depositBtn"><i class="fas fa-plus-circle"></i><span>Depósito</span></button>
+                    <button class="quick-btn kent" id="withdrawBtn"><i class="fas fa-minus-circle"></i><span>Levantamento</span></button>
+                    <button class="quick-btn kent" id="transferBtn"><i class="fas fa-exchange-alt"></i><span>Transferir</span></button>
+                    <button class="quick-btn kent" id="statementBtn"><i class="fas fa-file-alt"></i><span>Extrato</span></button>
+                </div>
+
+                <div class="tabs kent">
+                    <button class="tab-btn active" data-tab="transfer">⚡ Transferências</button>
+                    <button class="tab-btn" data-tab="schedule">📅 Agenda</button>
+                    <button class="tab-btn" data-tab="loan">Empréstimos</button>
+                    <button class="tab-btn" data-tab="receipts">Comprovativos</button>
+                    <button class="tab-btn" data-tab="history">Histórico</button>
+                    <button class="tab-btn" data-tab="profile">Perfil</button>
+                    <button class="tab-btn" data-tab="security">🔐 Segurança</button>
+                </div>
+
+                <div id="transferTab" class="tab-content active">
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-exchange-alt"></i><h2>Nova Transferência</h2></div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <label>Tipo de Transferência</label>
+                                <select id="transferType">
+                                    <option value="same">Mesmo Banco (Kent → Kent)</option>
+                                    <option value="inter">Inter-bancário (Kent → Jane)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label id="destinationLabel">Conta de Destino</label>
+                                <input type="text" id="destinationAccount" placeholder="Número da conta (ex: KENT-xxxxxxxx-xxxx)">
+                            </div>
+                            <div class="input-group">
+                                <label>Valor (CVE)</label>
+                                <input type="number" id="transferAmount" step="0.01" min="1" placeholder="0.00">
+                            </div>
+                            <div class="input-group">
+                                <label>Descrição (opcional)</label>
+                                <input type="text" id="transferDescription" placeholder="Motivo da transferência">
+                            </div>
+
+                            <div class="input-group">
+                                <label>Modo</label>
+                                <select id="transferMode">
+                                    <option value="immediate">⚡ Imediato</option>
+                                    <option value="scheduled">📅 Agendado</option>
+                                </select>
+                            </div>
+
+                            <div id="scheduleFields" style="display:none;">
+                                <div class="input-group">
+                                    <label>Modo Agendamento</label>
+                                    <select id="scheduleMode">
+                                        <option value="single">Pontual</option>
+                                        <option value="recurring">Recorrente</option>
+                                    </select>
+                                </div>
+                                <div id="singleDateFields">
+                                    <div class="input-group">
+                                        <label>Data</label>
+                                        <input type="date" id="transferScheduleDate">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Hora</label>
+                                        <input type="time" id="transferScheduleTime" value="00:00">
+                                    </div>
+                                </div>
+                                <div id="recurringFields" style="display:none;">
+                                    <div class="input-group">
+                                        <label>Frequência</label>
+                                        <select id="transferFrequency">
+                                            <option value="daily">Diária</option>
+                                            <option value="weekly">Semanal</option>
+                                            <option value="monthly">Mensal</option>
+                                            <option value="yearly">Anual</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Primeira Data</label>
+                                        <input type="date" id="transferFirstDate">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Hora</label>
+                                        <input type="time" id="transferRecurringTime" value="00:00">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Nº de Ocorrências (máx 60)</label>
+                                        <input type="number" id="transferOccurrences" min="1" max="60" value="12">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="feeInfo" class="fee-info"><i class="fas fa-info-circle"></i> Taxa: 0 CVE</div>
+                            <button class="btn btn-kent" id="doTransferBtn"><i class="fas fa-paper-plane"></i> <span id="transferBtnText">Transferir</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="scheduleTab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-calendar-alt"></i><h2>Agendamentos</h2></div>
+                        <div class="card-body">
+                            <div id="scheduledTransfersList">
+                                <p style="color: #64748b; text-align: center;">Carregando...</p>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;" id="scheduleActions">
+                                <button class="btn btn-danger" id="cancelAllSchedulesBtn" style="flex:1;">
+                                    <i class="fas fa-times-circle"></i> Cancelar Tudo
+                                </button>
+                                <button class="btn btn-outline" id="clearSchedulesBtn" style="flex:1;">
+                                    <i class="fas fa-broom"></i> Limpar Lista
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loanTab" class="tab-content">
+    <div class="card">
+        <div class="card-header"><i class="fas fa-hand-holding-usd"></i><h2>Solicitar Empréstimo</h2></div>
+        <div class="card-body">
+            <div class="input-group"><label>Valor Desejado (CVE) - Máx 100.000</label><input type="number" id="loanAmount" step="1000" min="1000" max="100000" placeholder="0.00"></div>
+            <div class="input-group"><label>Número de Parcelas (1 a 24 meses)</label><select id="loanParcels"><option value="1">1 mês</option><option value="2">2 meses</option><option value="3">3 meses</option><option value="4">4 meses</option><option value="5">5 meses</option><option value="6">6 meses</option><option value="7">7 meses</option><option value="8">8 meses</option><option value="9">9 meses</option><option value="10">10 meses</option><option value="11">11 meses</option><option value="12">12 meses</option><option value="13">13 meses</option><option value="14">14 meses</option><option value="15">15 meses</option><option value="16">16 meses</option><option value="17">17 meses</option><option value="18">18 meses</option><option value="19">19 meses</option><option value="20">20 meses</option><option value="21">21 meses</option><option value="22">22 meses</option><option value="23">23 meses</option><option value="24">24 meses</option></select></div>
+            <div id="loanInfo" class="fee-info"><p><strong>Taxa de juros mensal:</strong> <span id="interestRate">3.5</span>%</p><p><strong>Prestação mensal:</strong> <span id="monthlyPayment">0</span> CVE</p><p><strong>Total a pagar:</strong> <span id="totalPayment">0</span> CVE</p></div>
+            <button class="btn btn-kent" id="requestLoanBtn"><i class="fas fa-check-circle"></i> Solicitar Empréstimo</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header"><i class="fas fa-chart-line"></i><h2>Estado do Empréstimo</h2></div>
+        <div class="card-body"><div id="loanStatus"><p style="color: #64748b; text-align: center;">Carregando...</p></div><button class="btn btn-success" id="payLoanBtn" style="margin-top: 15px; display: none;"><i class="fas fa-money-bill-wave"></i> Pagar Parcela Mensal</button></div>
+    </div>
+</div>
+
+                <div id="receiptsTab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-file-invoice"></i><h2>Comprovativos de Transferência</h2></div>
+                        <div class="card-body">
+                            <div class="input-group"><label>Filtrar por Data</label><div style="display: flex; gap: 10px;"><input type="date" id="startDate" style="flex:1;"><span>até</span><input type="date" id="endDate" style="flex:1;"><button class="btn btn-outline" id="filterReceiptsBtn"><i class="fas fa-search"></i></button></div></div>
+                            <div id="receiptsList"><p style="color: #64748b; text-align: center;">Carregando...</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="historyTab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-history"></i><h2>Últimos Movimentos</h2></div>
+                        <div class="card-body"><div id="transactionsList"><p style="color: #64748b; text-align: center;">Carregando...</p></div></div>
+                    </div>
+                </div>
+
+                <div id="profileTab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-user-circle"></i><h2>Dados da Conta</h2></div>
+                        <div class="card-body">
+                            <div id="profileInfo"></div>
+                            <button class="btn btn-outline" id="changePasswordBtn" style="margin-top: 15px;"><i class="fas fa-key"></i> Alterar Password</button>
+                            <button class="btn btn-danger" id="logoutBtn" style="margin-top: 10px;"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="securityTab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-shield-alt"></i><h2>Segurança da Conta</h2></div>
+                        <div class="card-body">
+                            <div id="securityQuestionsDisplay"><p style="color: #64748b; text-align: center;">Carregando...</p></div>
+                            <button class="btn btn-outline" id="showChangeSecurityBtn" style="margin-top: 20px; width: 100%;"><i class="fas fa-edit"></i> Alterar Perguntas de Segurança</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notLoggedInView">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-sign-in-alt"></i><h2>Acesso à Conta</h2></div>
+                    <div class="card-body">
+                        <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="seuemail@gmail.com"></div>
+                        <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
+                        <button class="btn btn-kent" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                        <hr style="margin: 20px 0;">
+                        <button class="btn btn-outline" id="showRegisterBtn"><i class="fas fa-user-plus"></i> Criar Nova Conta</button>
+                        <button class="btn btn-outline" id="showRecoverBtn" style="margin-top: 10px;"><i class="fas fa-question-circle"></i> Esqueci a Password</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="registerView" style="display: none;">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-user-plus"></i><h2>Abrir Conta - Banco Comercial de Kent</h2></div>
+                    <div class="card-body">
+                        <div class="input-group"><label>Nome Completo *</label><input type="text" id="regName" placeholder="João Silva"></div>
+                        <div class="input-group"><label>Email *</label><input type="email" id="regEmail" placeholder="joao@gmail.com"></div>
+                        <div class="input-group"><label>Telefone</label><input type="tel" id="regPhone" placeholder="+2389123456"></div>
+                        <div class="input-group"><label>Nome da Mãe</label><input type="text" id="regMotherName" placeholder="Maria Silva"></div>
+                        <div class="input-group"><label>Nome do Pai</label><input type="text" id="regFatherName" placeholder="José Silva"></div>
+                        <div class="input-group"><label>Idade</label><input type="number" id="regAge" placeholder="30"></div>
+                        <div class="input-group"><label>Data de Nascimento</label><input type="text" id="regBirthDate" placeholder="15/05/1990"></div>
+                        <div class="input-group"><label>Estado Civil</label><select id="regMaritalStatus"><option>Solteiro</option><option>Casado</option><option>Divorciado</option><option>Viúvo</option></select></div>
+                        <div class="input-group"><label>Número Passaporte</label><input type="text" id="regPassport" placeholder="PC123456"></div>
+                        <div class="input-group"><label>NIF</label><input type="text" id="regNif" placeholder="123456789"></div>
+                        <div class="input-group"><label>Endereço</label><input type="text" id="regAddress" placeholder="Mindelo, São Vicente"></div>
+                        <div class="input-group"><label>Password (opcional)</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres"></div>
+                        <div class="input-group"><label>Confirmar Password</label><input type="password" id="regConfirmPassword" placeholder="••••••••"></div>
+                        <hr>
+                        <h4>Perguntas de Segurança</h4>
+                        <div class="input-group"><label>Pergunta 1</label><select id="securityQuestion1"><option>Qual o nome da sua mãe?</option><option>Qual o nome do seu pai?</option><option>Qual o nome da sua primeira escola?</option></select><input type="text" id="securityAnswer1" placeholder="Resposta" style="margin-top: 8px;"></div>
+                        <div class="input-group"><label>Pergunta 2</label><select id="securityQuestion2"><option>Qual o nome do seu animal de estimação?</option><option>Qual a sua comida favorita?</option><option>Qual o nome da sua cidade natal?</option></select><input type="text" id="securityAnswer2" placeholder="Resposta" style="margin-top: 8px;"></div>
+                        <div class="input-group"><label>Pergunta 3</label><select id="securityQuestion3"><option>Qual o modelo do seu primeiro carro?</option><option>Qual a sua cor favorita?</option><option>Qual o nome do seu melhor amigo de infância?</option></select><input type="text" id="securityAnswer3" placeholder="Resposta" style="margin-top: 8px;"></div>
+                        <button class="btn btn-kent" id="doRegisterBtn"><i class="fas fa-check-circle"></i> Criar Conta</button>
+                        <button class="btn btn-outline" id="backToLoginBtn"><i class="fas fa-arrow-left"></i> Voltar ao Login</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="recoverView" style="display: none;">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-question-circle"></i><h2>Recuperar Acesso</h2></div>
+                    <div class="card-body">
+                        <div class="input-group"><label>Email</label><input type="email" id="recoverEmail" placeholder="seuemail@gmail.com"></div>
+                        <button class="btn btn-kent" id="recoverStep1Btn"><i class="fas fa-search"></i> Verificar</button>
+                        <div id="recoverQuestions" style="display: none; margin-top: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span><i class="fas fa-building"></i> Banco Comercial de Kent</span>
+            <span><i class="fas fa-wifi" id="connectionIcon"></i> <span id="connectionStatus">Online</span></span>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <div id="modal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle"></h3><button class="close-modal">&times;</button></div><div class="modal-body" id="modalBody"></div></div></div>
+
+    <script src="/js/kent.js"></script>
+</body>
+</html>
