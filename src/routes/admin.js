@@ -473,22 +473,37 @@ router.delete('/scheduled-transfer-all/:bankCode', adminMiddleware, async (req, 
 router.get('/dashboard/:bankCode', adminMiddleware, async (req, res) => {
     const { bankCode } = req.params;
     try {
+        // Contagens básicas
         const { count: total } = await supabase.from('accounts').select('*', { count: 'exact', head: true }).eq('bank', bankCode);
         const { count: active } = await supabase.from('accounts').select('*', { count: 'exact', head: true }).eq('bank', bankCode).eq('status', 'active');
         const { count: inactive } = await supabase.from('accounts').select('*', { count: 'exact', head: true }).eq('bank', bankCode).eq('status', 'inactive');
         const { count: blocked } = await supabase.from('accounts').select('*', { count: 'exact', head: true }).eq('bank', bankCode).eq('status', 'blocked');
+        
+        // Saldo total
         const { data: balances } = await supabase.from('accounts').select('balance').eq('bank', bankCode);
+        const totalBalance = (balances || []).reduce((sum, a) => sum + parseFloat(a.balance || 0), 0);
+        
+        // Taxas
         const { data: fees } = await supabase.from('transactions').select('fee').eq('bank', bankCode);
+        const totalFees = (fees || []).reduce((sum, a) => sum + parseFloat(a.fee || 0), 0);
+        
+        // Top clientes
         const { data: topClients } = await supabase.from('accounts').select('id, holder_name, account_number, balance').eq('bank', bankCode).not('holder_email', 'like', 'banco@%').order('balance', { ascending: false }).limit(5);
+        
+        // Atividade recente
         const { data: recent } = await supabase.from('transactions').select('type, amount, description, created_at, accounts(holder_name)').eq('bank', bankCode).order('created_at', { ascending: false }).limit(10);
         
         res.json({
-            stats: { totalAccounts: total, activeAccounts: active, inactiveAccounts: inactive, blockedAccounts: blocked, totalBalance: (balances || []).reduce((s, a) => s + parseFloat(a.balance || 0), 0), totalFees: (fees || []).reduce((s, a) => s + parseFloat(a.fee || 0), 0) },
-            balanceEvolution: [], transactionsByDay: [], feesByDay: [],
+            stats: { totalAccounts: total || 0, activeAccounts: active || 0, inactiveAccounts: inactive || 0, blockedAccounts: blocked || 0, totalBalance, totalFees },
+            balanceEvolution: [],
+            transactionsByDay: [],
+            feesByDay: [],
             topClients: topClients || [],
-            recentActivity: (recent || []).map(r => ({ ...r, holder_name: r.accounts?.holder_name }))
+            recentActivity: (recent || []).map(r => ({ ...r, holder_name: r.accounts?.holder_name || 'N/A' }))
         });
-    } catch (err) { res.status(500).json({ error: err.message }); }
+    } catch (err) {
+        console.error('Dashboard error:', err);
+        res.status(500).json({ error: err.message });
+    }
 });
-
 module.exports = router;
