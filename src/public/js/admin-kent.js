@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = '/api';
 const BANK_CODE = 'kent';
 
 let currentToken = localStorage.getItem('kent_admin_token');
