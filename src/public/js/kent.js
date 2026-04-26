@@ -1,5 +1,5 @@
 // Configuração
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = '/api';
 const BANK_CODE = 'kent';
 let currentAccountId = null;
 let currentToken = null;
