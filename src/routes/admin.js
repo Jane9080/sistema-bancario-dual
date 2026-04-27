@@ -244,8 +244,10 @@ router.put('/activate-all/:bankCode', adminMiddleware, async (req, res) => {
     try {
         const { data: accounts } = await supabase.from('accounts').select('id, holder_email').eq('bank', bankCode).neq('status', 'active').not('holder_email', 'like', 'banco@%');
         await supabase.from('accounts').update({ status: 'active', account_locked: false, failed_attempts: 0 }).eq('bank', bankCode).not('holder_email', 'like', 'banco@%');
+        const { sendNotificationEmail } = require('../services/email');
         for (const acc of (accounts || [])) {
             await insertRecord(bankCode, 'notifications', { account_id: acc.id, type: 'account', title: '✅ Conta Ativada', message: 'Sua conta foi ativada.' });
+            if (acc.holder_email) sendNotificationEmail(bankCode, acc.holder_email, 'Conta Ativada', '✅ Conta Ativada', 'Sua conta foi ativada pelo administrador.').catch(e => {});
         }
         res.json({ success: true, message: `${(accounts || []).length} conta(s) ativada(s)!` });
     } catch (err) { res.status(500).json({ error: err.message }); }
@@ -256,8 +258,10 @@ router.put('/deactivate-all/:bankCode', adminMiddleware, async (req, res) => {
     try {
         const { data: accounts } = await supabase.from('accounts').select('id, holder_email').eq('bank', bankCode).in('status', ['active', 'blocked']).not('holder_email', 'like', 'banco@%');
         await supabase.from('accounts').update({ status: 'inactive', account_locked: false }).eq('bank', bankCode).in('status', ['active', 'blocked']).not('holder_email', 'like', 'banco@%');
+        const { sendNotificationEmail } = require('../services/email');
         for (const acc of (accounts || [])) {
             await insertRecord(bankCode, 'notifications', { account_id: acc.id, type: 'account', title: '⏸️ Conta Desativada', message: 'Sua conta foi desativada.' });
+            if (acc.holder_email) sendNotificationEmail(bankCode, acc.holder_email, 'Conta Desativada', '⏸️ Conta Desativada', 'Sua conta foi desativada pelo administrador.').catch(e => {});
         }
         res.json({ success: true, message: `${(accounts || []).length} conta(s) desativada(s)!` });
     } catch (err) { res.status(500).json({ error: err.message }); }
@@ -268,13 +272,14 @@ router.put('/block-all/:bankCode', adminMiddleware, async (req, res) => {
     try {
         const { data: accounts } = await supabase.from('accounts').select('id, holder_email').eq('bank', bankCode).in('status', ['active', 'inactive']).not('holder_email', 'like', 'banco@%');
         await supabase.from('accounts').update({ status: 'blocked', account_locked: true }).eq('bank', bankCode).in('status', ['active', 'inactive']).not('holder_email', 'like', 'banco@%');
+        const { sendNotificationEmail } = require('../services/email');
         for (const acc of (accounts || [])) {
             await insertRecord(bankCode, 'notifications', { account_id: acc.id, type: 'account', title: '🔒 Conta Bloqueada', message: 'Sua conta foi bloqueada.' });
+            if (acc.holder_email) sendNotificationEmail(bankCode, acc.holder_email, 'Conta Bloqueada', '🔒 Conta Bloqueada', 'Sua conta foi bloqueada pelo administrador.').catch(e => {});
         }
         res.json({ success: true, message: `${(accounts || []).length} conta(s) bloqueada(s)!` });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
-
 // 20, 21, 22 - Todos extratos/comprovativos/empréstimos
 router.get('/all-transactions/:bankCode', adminMiddleware, async (req, res) => {
     const { bankCode } = req.params;
