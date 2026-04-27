@@ -849,7 +849,7 @@ async function showNotificationsList() {
             message += `${status}\n`;
             message += `📌 ${n.title}\n`;
             message += `📝 ${n.message}\n`;
-            message += `📅 ${new Date(n.created_at + 'Z').toLocaleString()}\n`;
+           message += `📅 ${new Date(n.created_at).toLocaleString()}\n`;
             message += `${'─'.repeat(30)}\n`;
         }
         
